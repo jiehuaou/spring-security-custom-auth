@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class Controller {
 
     @RequestMapping("/course")
-    public ResponseEntity<ApiResponse> security() {
+    public ResponseEntity<ApiResponse> adminCourse() {
 
         return new ResponseEntity(new ApiResponse(200, "Added by admin"), HttpStatus.OK);
     }
@@ -24,6 +24,11 @@ public class Controller {
     public ResponseEntity<ApiResponse> user() {
 //        return "this is user";
         return new ResponseEntity(new ApiResponse(200, "Added by student"), HttpStatus.OK);
+    }
+
+    @RequestMapping("/other")
+    public ResponseEntity<ApiResponse> other() {
+        return new ResponseEntity(new ApiResponse(200, "Added by other"), HttpStatus.OK);
     }
 
     @RequestMapping("/hello")
@@ -37,7 +42,7 @@ public class Controller {
             return new ResponseEntity(new ApiResponse(200, "hello " + auth.getPrincipal()), HttpStatus.OK);
         }else{
             System.out.println(auth);
-            if(auth.getPrincipal() instanceof User){
+            if(auth.getPrincipal()!=null && auth.getPrincipal() instanceof User){
                 User u = (User) auth.getPrincipal();
                 System.out.println("This is Authenticated user: " + u.getUsername());
                 //return "hello " + u.getUsername();

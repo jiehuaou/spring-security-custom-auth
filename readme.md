@@ -38,3 +38,35 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter {
 }
 ```
 
+## user/role
+
+* admin - ADMIN
+* user - USER
+* student - USER
+* abc - ROLE_USER, ROLE_ADMIN
+* anonymous(id "guest") - ROLE_GUEST
+
+## resource role
+
+* POST:/course - ADMIN
+* POST:/student - ADMIN, USER
+* any:/hello - login or not
+* other - must login
+
+## test case
+
+```shell
+curl -X POST  http://127.0.0.1:8080/student -u "user:123"
+
+curl -X POST  http://127.0.0.1:8080/student -u "admin:123"
+
+curl -X POST  http://127.0.0.1:8080/course -u "user:123"
+
+curl -X POST  http://127.0.0.1:8080/course -u "admin:123"
+
+curl -X POST  http://127.0.0.1:8080/hello 
+
+curl -X POST  http://127.0.0.1:8080/other -u "abc:xxxxxx"
+
+curl -X POST  http://127.0.0.1:8080/other
+```
