@@ -10,12 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @RunWith(SpringRunner.class)
@@ -30,12 +28,11 @@ public class AdminRestTest {
     @Before
     public void setUp() throws MalformedURLException {
         restTemplate = new TestRestTemplate("admin", "123");
-        base = new URL("http://localhost:" + port + "/admin");
+        base = new URL("http://localhost:" + port + "/course");
     }
 
     @Test
-    public void loginAdminThenSuccess()
-            throws IllegalStateException, IOException {
+    public void loginAdminThenSuccess() throws IllegalStateException {
         ResponseEntity<String> response =
                 restTemplate.getForEntity(base.toString(), String.class);
 
@@ -44,14 +41,13 @@ public class AdminRestTest {
     }
 
     @Test
-    public void loginWrongAdminThenFailed()
-            throws IllegalStateException, IOException {
+    public void loginWrongAdminThenFailed() throws IllegalStateException {
         restTemplate = new TestRestTemplate("admin+", "123*");
         ResponseEntity<String> response =
                 restTemplate.getForEntity(base.toString(), String.class);
 
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-        assertTrue(response.getBody().contains("Authentication Failure"));
+        assertTrue(response.getBody().contains("user is NOT login"));
     }
 }
 
