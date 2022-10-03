@@ -1,11 +1,13 @@
 package com.example.demo;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.context.annotation.Description;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -32,12 +34,14 @@ public class AdminRestTest {
     }
 
     @Test
+    @Description("test login Admin Success")
     public void loginAdminThenSuccess() throws IllegalStateException {
         ResponseEntity<String> response =
                 restTemplate.getForEntity(base.toString(), String.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertTrue(response.getBody().contains("admin"));
+        //assertTrue(response.getBody().contains("admin"));
+        assertThat(response.getBody(), CoreMatchers.containsString("admin"));
     }
 
     @Test
@@ -47,7 +51,8 @@ public class AdminRestTest {
                 restTemplate.getForEntity(base.toString(), String.class);
 
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-        assertTrue(response.getBody().contains("user is NOT login"));
+        assertThat(response.getBody(), CoreMatchers.containsString("user is NOT login"));
+        //assertTrue(response.getBody().contains("user is NOT login"));
     }
 }
 
